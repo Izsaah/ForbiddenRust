@@ -1,9 +1,0 @@
-[configuration]
-entry_symbol = "gdextension_init"
-compatibility_minimum = "4.2"
-
-[libraries]
-windows.x86_64 = "res://addons/p2p_network/bin/p2p_gdextension.dll"
-linux.x86_64 = "res://addons/p2p_network/bin/libp2p_gdextension.so"
-macos.arm64 = "res://addons/p2p_network/bin/libp2p_gdextension.dylib"
-macos.x86_64 = "res://addons/p2p_network/bin/libp2p_gdextension.dylib"
