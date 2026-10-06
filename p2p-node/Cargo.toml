@@ -1,0 +1,30 @@
+[package]
+name = "p2p-node"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+futures = "0.3"
+libp2p = { version = "0.57", features = [
+    "autonat",
+    "dcutr",
+    "identify",
+    "macros",
+    "noise",
+    "ping",
+    "relay",
+    "tcp",
+    "tokio",
+    "yamux",
+] }
+libp2p-stream = "0.5.0-alpha"
+tokio = { version = "1", features = ["macros", "net", "rt-multi-thread", "io-util", "time"] }
+tokio-util = { version = "0.7", features = ["compat"] }
+tunnel-core = { path = "../tunnel-core" }
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+
+[dev-dependencies]
+proptest = "1"

@@ -1,0 +1,21 @@
+[package]
+name = "reverse-tunnel-client"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1"
+async-trait = "0.1"
+clap = { version = "4", features = ["derive"] }
+futures = "0.3"
+rustls-pemfile = "2"
+socket2 = "0.6"
+tokio = { version = "1", features = ["macros", "net", "rt-multi-thread", "io-util", "time"] }
+tokio-yamux = "0.3.20"
+tokio-rustls = "0.26"
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+tunnel-core = { path = "../tunnel-core" }
+
+[dev-dependencies]
+proptest = "1"

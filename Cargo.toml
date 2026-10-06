@@ -1,0 +1,41 @@
+[package]
+name = "reverse-tunnel-e2e"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1"
+async-trait = "0.1"
+futures = "0.3"
+clap = { version = "4", features = ["derive"] }
+libp2p = { version = "0.57", features = ["autonat", "dcutr", "identify", "macros", "noise", "ping", "relay", "tcp", "tokio", "yamux"] }
+libp2p-stream = "0.5.0-alpha"
+rcgen = "0.14"
+rustls-pemfile = "2"
+socket2 = "0.6"
+tokio = { version = "1", features = ["macros", "net", "rt-multi-thread", "io-util", "time", "process", "sync", "fs", "test-util"] }
+tokio-rustls = "0.26"
+tokio-yamux = "0.3.20"
+tokio-util = { version = "0.7", features = ["compat"] }
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+tunnel-core = { path = "tunnel-core" }
+
+[dev-dependencies]
+proptest = "1"
+
+[[bin]]
+name = "reverse-tunnel-relay"
+path = "relay/src/main.rs"
+
+[[bin]]
+name = "reverse-tunnel-client"
+path = "client/src/main.rs"
+
+[[bin]]
+name = "p2p-node"
+path = "p2p-node/src/main.rs"
+
+[workspace]
+members = ["tunnel-core", "relay", "client", "p2p-node", "p2p-gdextension"]
+resolver = "2"

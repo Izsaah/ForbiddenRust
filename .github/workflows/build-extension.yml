@@ -1,0 +1,70 @@
+name: Build Godot extension
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-extension-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: p2p-gdextension-linux-x86_64
+            library: target/release/libp2p_gdextension.so
+          - os: windows-latest
+            artifact_name: p2p-gdextension-windows-x86_64
+            library: target/release/p2p_gdextension.dll
+          - os: macos-latest
+            artifact_name: p2p-gdextension-macos
+            library: target/release/libp2p_gdextension.dylib
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Cargo registry and build artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Build p2p-gdextension
+        run: cargo build --release -p p2p-gdextension
+
+      - name: Verify build outputs
+        shell: bash
+        run: |
+          test -f "${{ matrix.library }}"
+          test -f "p2p-gdextension/p2p_network.gdextension"
+
+      - name: Upload platform artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          if-no-files-found: error
+          path: |
+            ${{ matrix.library }}
+            p2p-gdextension/p2p_network.gdextension
+          retention-days: 30
