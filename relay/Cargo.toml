@@ -1,6 +1,6 @@
 [package]
 name = "reverse-tunnel-relay"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 
 [dependencies]
@@ -12,7 +12,7 @@ rustls-pemfile = "2"
 socket2 = "0.6"
 tokio = { version = "1", features = ["macros", "net", "rt-multi-thread", "io-util", "time"] }
 tokio-yamux = "0.3.20"
-tunnel-core = { path = "../tunnel-core" }
+tunnel-core = { path = "../tunnel-core", version = "0.1.1" }
 tokio-rustls = "0.26"
 serde = { version = "1", features = ["derive"] }
 toml = "0.8"

@@ -28,6 +28,32 @@ transparent `copy_bidirectional` pipeline are reusable and unit-tested with
 cargo build --release
 ```
 
+## Publish
+
+This repository is a workspace containing separate publishable crates. The
+root package is an end-to-end test harness; its executable targets reference
+source files owned by the member packages and are not included when the root
+package is archived. Publish the crates that contain the application code
+individually, starting with the shared library:
+
+```text
+cargo publish -p tunnel-core
+cargo publish -p reverse-tunnel-relay
+cargo publish -p reverse-tunnel-client
+cargo publish -p p2p-node
+cargo publish -p p2p-gdextension
+```
+
+Verify each archive before uploading with:
+
+```text
+cargo package -p reverse-tunnel-relay --list
+```
+
+The member package archives include their own `src` directories. Publish
+`tunnel-core` first and wait for it to become available in the registry before
+publishing the dependent crates.
+
 Run the process-level E2E test, which starts both binaries, a loopback
 backend, and a simulated external TCP client with dynamically allocated ports:
 
